@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp
 {
@@ -10,19 +10,19 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// The set of conditions that determines which customers will be returned by the saved search
         /// </summary>
         [JsonProperty("query")]
         public string Query { get; set; }
-        
+
         /// <summary>
         /// The date and time when the customer saved search was created. 
         /// </summary>
         [JsonProperty("created_at")]
         public DateTimeOffset? CreatedAt { get; set; }
-        
+
         /// <summary>
         /// The date and time when the customer saved search was updated. 
         /// </summary>

@@ -12,29 +12,29 @@ namespace ShopifySharp.Credentials
         public long PartnerOrganizationId { get; } = partnerOrganizationId;
         public string AccessToken { get; } = accessToken;
 
-        #if NETSTANDARD2_0
+#if NETSTANDARD2_0
         public override bool Equals(object obj)
         {
             return obj is ShopifyPartnerApiCredentials other
                 && PartnerOrganizationId == other.PartnerOrganizationId
                 && AccessToken == other.AccessToken;
         }
-        #else
+#else
         public override bool Equals(object? obj)
         {
             return obj is ShopifyPartnerApiCredentials other
                 && PartnerOrganizationId == other.PartnerOrganizationId
                 && AccessToken == other.AccessToken;
         }
-        #endif
+#endif
 
         public override int GetHashCode()
         {
-            #if NETSTANDARD2_0
+#if NETSTANDARD2_0
             return (PartnerOrganizationId, AccessToken).GetHashCode();
-            #else
+#else
             return HashCode.Combine(PartnerOrganizationId, AccessToken);
-            #endif
+#endif
         }
 
         public static bool operator ==(ShopifyPartnerApiCredentials left, ShopifyPartnerApiCredentials right)

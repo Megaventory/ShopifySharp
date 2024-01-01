@@ -26,6 +26,6 @@ namespace ShopifySharp
         /// The price of the shipping method. Required for custom shipping lines.
         /// </summary>
         [JsonProperty("price")]
-        public decimal? Price { get; set; } 
+        public decimal? Price { get; set; }
     }
 }

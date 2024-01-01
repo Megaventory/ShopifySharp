@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -28,7 +28,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Restricts results to those published after date (format: 2008-12-31 03:00).
         /// </summary>
@@ -40,7 +40,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("published_at_max")]
         public DateTimeOffset? PublishedAtMax { get; set; }
-        
+
         /// <summary>
         /// Published Status.
         /// published - Show only published objects, unpublished - Show only unpublished objects, any - Show all objects(default)

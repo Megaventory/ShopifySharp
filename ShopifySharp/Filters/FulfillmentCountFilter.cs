@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -16,7 +16,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Restricts results to those created at or after date and time.
         /// </summary>

@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -19,13 +19,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("handle")]
         public string Handle { get; set; }
-        
+
         /// <summary>
         /// Restrict results to after the specified ID.
         /// </summary>
         [JsonProperty("since_id")]
         public long? SinceId { get; set; }
-        
+
         /// <summary>
         /// Show those created at or after date.
         /// </summary>
@@ -37,7 +37,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("created_at_max")]
         public DateTimeOffset? CreatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Show those updated at or before date.
         /// </summary>
@@ -49,7 +49,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Show those published at or before date.
         /// </summary>
@@ -61,7 +61,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("published_at_max")]
         public DateTimeOffset? PublishedAtMax { get; set; }
-        
+
         /// <summary>
         /// Restrict results to pages with a given published status. Known values: published, unpublished, any. Default: any. 
         /// </summary>

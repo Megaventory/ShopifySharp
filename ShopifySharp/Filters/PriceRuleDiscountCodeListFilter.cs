@@ -5,6 +5,6 @@ namespace ShopifySharp.Filters
     /// </summary>
     public class PriceRuleDiscountCodeListFilter : ListFilter<PriceRuleDiscountCode>
     {
-        
+
     }
 }

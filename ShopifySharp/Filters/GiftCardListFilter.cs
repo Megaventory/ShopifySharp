@@ -12,7 +12,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("since_id")]
         public long? SinceId { get; set; }
-        
+
         /// <summary>
         /// Restricts results to those with the given status. Known values are "enabled", "disabled".
         /// </summary>

@@ -1,8 +1,8 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Lists;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -17,8 +17,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public TenderTransactionService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal TenderTransactionService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal TenderTransactionService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<ListResult<TenderTransaction>> ListAsync(ListFilter<TenderTransaction> filter, CancellationToken cancellationToken = default) =>
             await ExecuteGetListAsync("tender_transactions.json", "tender_transactions", filter, cancellationToken);

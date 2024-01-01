@@ -11,7 +11,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("order")]
         public string Order { get; set; }
-        
+
         /// <summary>
         /// The text to search for.
         /// </summary>

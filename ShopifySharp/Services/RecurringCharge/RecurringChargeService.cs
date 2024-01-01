@@ -1,8 +1,8 @@
 ﻿using ShopifySharp.Filters;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -17,8 +17,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public RecurringChargeService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal RecurringChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal RecurringChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<RecurringCharge> CreateAsync(RecurringCharge charge, CancellationToken cancellationToken = default) =>
             await ExecutePostAsync<RecurringCharge>("recurring_application_charges.json", "recurring_application_charge", cancellationToken, new { recurring_application_charge = charge });

@@ -9,7 +9,7 @@ namespace ShopifySharp.Lists
         public int? Limit { get; }
 
         public string PageInfo { get; }
-        
+
         public string Fields { get; }
 
         public PagingLink(string url, string pageInfo, int? limit, string fields = null)

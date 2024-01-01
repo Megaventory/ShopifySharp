@@ -1,6 +1,6 @@
-using System;
 using Newtonsoft.Json;
 using ShopifySharp.Converters;
+using System;
 
 namespace ShopifySharp
 {

@@ -15,12 +15,12 @@ namespace ShopifySharp
         //When a 429 is returned because the bucket is full, Shopify doesn't include the X-Shopify-Shop-Api-Call-Limit header in the response
         public ShopifyRateLimitReason Reason => HttpResponse.Headers.Contains(RestBucketState.RESPONSE_HEADER_API_CALL_LIMIT) ? ShopifyRateLimitReason.Other : ShopifyRateLimitReason.BucketFull;
 
-        public ShopifyRateLimitException(HttpResponseMessage response, 
+        public ShopifyRateLimitException(HttpResponseMessage response,
                                          HttpStatusCode httpStatusCode,
                                          IEnumerable<string> errors,
                                          string message,
                                          string jsonError,
-                                         string requestId) 
+                                         string requestId)
             : base(response, httpStatusCode, errors, message, jsonError, requestId)
         {
             ExtractRetryAfterSeconds(response);

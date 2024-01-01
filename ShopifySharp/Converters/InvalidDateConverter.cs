@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
-using Newtonsoft.Json;
 
 namespace ShopifySharp.Converters
 {
@@ -21,7 +21,7 @@ namespace ShopifySharp.Converters
         {
             if (reader.Value != null && reader.Value.ToString().StartsWith("0000-"))
                 return null;
-            
+
             return base.ReadJson(reader, objectType, existingValue, serializer);
         }
     }

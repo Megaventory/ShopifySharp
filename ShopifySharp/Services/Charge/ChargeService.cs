@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public ChargeService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal ChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal ChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<Charge> CreateAsync(Charge charge, CancellationToken cancellationToken = default)
         {
@@ -47,6 +47,6 @@ namespace ShopifySharp
 
         /// <inheritdoc />
         public virtual async Task<IEnumerable<Charge>> ListAsync(ChargeListFilter filter = null, CancellationToken cancellationToken = default) =>
-            await ExecuteGetAsync< IEnumerable < Charge >>("application_charges.json", "application_charges", filter, cancellationToken);
+            await ExecuteGetAsync<IEnumerable<Charge>>("application_charges.json", "application_charges", filter, cancellationToken);
     }
 }

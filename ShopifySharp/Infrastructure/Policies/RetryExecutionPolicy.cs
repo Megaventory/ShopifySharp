@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ShopifySharp.Infrastructure;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ShopifySharp.Infrastructure;
 
 namespace ShopifySharp
 {

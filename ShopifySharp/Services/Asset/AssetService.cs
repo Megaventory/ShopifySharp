@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Threading;
-using ShopifySharp.Filters;
+﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Utilities;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public AssetService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal AssetService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal AssetService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<Asset> GetAsync(long themeId, string key, string fields = null, CancellationToken cancellationToken = default)
         {
@@ -34,13 +34,13 @@ namespace ShopifySharp
             }
 
             var response = await ExecuteRequestAsync<Asset>(req, HttpMethod.Get, cancellationToken, rootElement: "asset");
-            
+
             return response.Result;
         }
 
         /// <inheritdoc />
         public virtual async Task<IEnumerable<Asset>> ListAsync(long themeId, AssetListFilter filter = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<IEnumerable<Asset>>($"themes/{themeId}/assets.json", "assets", filter, cancellationToken);
+            await ExecuteGetAsync<IEnumerable<Asset>>($"themes/{themeId}/assets.json", "assets", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<Asset> CreateOrUpdateAsync(long themeId, Asset asset, CancellationToken cancellationToken = default)

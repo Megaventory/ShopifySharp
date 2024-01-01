@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public UsageChargeService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal UsageChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal UsageChargeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<UsageCharge> CreateAsync(long recurringChargeId, string description, decimal price, CancellationToken cancellationToken = default)
         {
@@ -62,7 +62,7 @@ namespace ShopifySharp
             {
                 req.QueryParams.AddRange(filter.ToQueryParameters());
             }
-            
+
             var response = await ExecuteRequestAsync<List<UsageCharge>>(req, HttpMethod.Get, cancellationToken, rootElement: "usage_charges");
 
             return response.Result;

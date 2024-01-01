@@ -9,7 +9,7 @@ namespace ShopifySharp
         public T Result { get; }
 
         public string RawResult { get; }
-        
+
         /// <summary>
         /// Only exists for list requests, will be null or empty for all others. 
         /// </summary>

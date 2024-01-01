@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace ShopifySharp
 {
-    public class Address: ShopifyObject
+    public class Address : ShopifyObject
     {
         /// <summary>
         /// The mailing address.

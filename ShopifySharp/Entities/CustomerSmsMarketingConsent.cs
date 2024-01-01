@@ -1,9 +1,9 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp
 {
-    public class CustomerSmsMarketingConsent 
+    public class CustomerSmsMarketingConsent
     {
         /// <summary>
         /// The current SMS marketing state for the customer.

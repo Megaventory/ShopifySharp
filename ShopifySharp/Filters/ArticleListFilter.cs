@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -13,13 +13,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("handle")]
         public string Handle { get; set; }
-        
+
         /// <summary>
         /// Filter the articles to just those by a given author.
         /// </summary>
         [JsonProperty("author")]
         public string Author { get; set; }
-        
+
         /// <summary>
         /// Filter the articles to just those with a given tag.
         /// </summary>

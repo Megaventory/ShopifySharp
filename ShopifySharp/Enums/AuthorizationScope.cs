@@ -34,7 +34,7 @@ namespace ShopifySharp.Enums
         [EnumMember(Value = "read_orders")]
         ReadOrders,
 
-        [EnumMember( Value = "read_all_orders" )]
+        [EnumMember(Value = "read_all_orders")]
         ReadAllOrders,
 
         [EnumMember(Value = "write_orders")]
@@ -111,13 +111,13 @@ namespace ShopifySharp.Enums
 
         [EnumMember(Value = "read_assigned_fulfillment_orders")]
         ReadAssignedFulfillmentOrders,
-        
+
         [EnumMember(Value = "write_assigned_fulfillment_orders")]
         WriteAssignedFulfillmentOrders,
 
         [EnumMember(Value = "read_cart_transforms")]
         ReadCartTransforms,
-        
+
         [EnumMember(Value = "write_cart_transforms")]
         WriteCartTransforms,
 

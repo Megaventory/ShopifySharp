@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.Extensions.Primitives;
 #if NET6_0_OR_GREATER
 using System.Buffers;
 #endif
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.Extensions.Primitives;
-using System.Net.Http.Headers;
 using ShopifySharp.Enums;
 using ShopifySharp.Utilities;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {

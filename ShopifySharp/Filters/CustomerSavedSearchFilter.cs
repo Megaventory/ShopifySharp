@@ -17,13 +17,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("order")]
         public string Order { get; set; }
-        
+
         /// <summary>
         /// Retrieve only certain fields, specified by a comma-separated list of field names. 
         /// </summary>
         [JsonProperty("fields")]
         public string Fields { get; set; }
-        
+
         /// <summary>
         /// The number of items which should be returned. Default is 50, maximum is 250.
         /// </summary>

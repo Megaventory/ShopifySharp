@@ -1,9 +1,9 @@
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -13,8 +13,8 @@ namespace ShopifySharp
     public class StorefrontAccessTokenService : ShopifyService, IStorefrontAccessTokenService
     {
         public StorefrontAccessTokenService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal StorefrontAccessTokenService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal StorefrontAccessTokenService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public async Task<StorefrontAccessToken> CreateAsync(string title, CancellationToken cancellationToken = default)
         {
@@ -23,7 +23,7 @@ namespace ShopifySharp
             {
                 storefront_access_token = new
                 {
-                    title = title 
+                    title = title
                 }
             });
             var response = await ExecuteRequestAsync<StorefrontAccessToken>(req, HttpMethod.Post, cancellationToken, content, "storefront_access_token");

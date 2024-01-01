@@ -1,12 +1,12 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
+using ShopifySharp.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using System;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -25,8 +25,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public CustomerSavedSearchService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal CustomerSavedSearchService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal CustomerSavedSearchService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(CustomerSavedSearchCountFilter filter = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<int>($"{RootResource}/count.json", "count", filter, cancellationToken);
@@ -37,7 +37,7 @@ namespace ShopifySharp
 
         /// <inheritdoc />
         public virtual async Task<ListResult<CustomerSavedSearch>> ListAsync(CustomerSavedSearchListFilter filter, CancellationToken cancellationToken = default) =>
-            await ListAsync((ListFilter<CustomerSavedSearch>) filter, cancellationToken);
+            await ListAsync((ListFilter<CustomerSavedSearch>)filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<CustomerSavedSearch> GetAsync(long customerSearchId, string fields = null, CancellationToken cancellationToken = default)

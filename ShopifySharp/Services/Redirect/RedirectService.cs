@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public RedirectService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal RedirectService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal RedirectService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(RedirectCountFilter filter = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<int>("redirects/count.json", "count", filter, cancellationToken);

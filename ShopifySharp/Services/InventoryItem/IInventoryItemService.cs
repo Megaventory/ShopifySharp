@@ -1,7 +1,7 @@
-using System.Threading;
-using System.Threading.Tasks;
 using ShopifySharp.Filters;
 using ShopifySharp.Lists;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -33,6 +33,6 @@ namespace ShopifySharp
         /// </summary>
         /// <param name="inventoryItemId">The id of the inventory item to retrieve.</param>
         /// <param name="cancellationToken">Cancellation Token</param>
-        Task<InventoryItem> UpdateAsync( long inventoryItemId, InventoryItem inventoryItem, CancellationToken cancellationToken = default);
+        Task<InventoryItem> UpdateAsync(long inventoryItemId, InventoryItem inventoryItem, CancellationToken cancellationToken = default);
     }
 }

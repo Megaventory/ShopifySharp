@@ -51,7 +51,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("cart_token")]
         public string CartToken { get; set; }
-        
+
         /// <summary>
         /// A unique value when referencing the <see cref="ShopifySharp.Checkout"/> that's associated with the order. 
         /// </summary>
@@ -75,13 +75,13 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("closed_at")]
         public DateTimeOffset? ClosedAt { get; set; }
-        
+
         /// <summary>
         /// Whether inventory has been reserved for the order.
         /// </summary>
         [JsonProperty("confirmed")]
         public bool? Confirmed { get; set; }
-        
+
         /// <summary>
         /// The date and time when the order was created in Shopify.
         /// </summary>
@@ -385,26 +385,26 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("presentment_currency")]
         public string PresentmentCurrency { get; set; }
- 
+
         /// <summary>
         /// The total of all line item prices in shop and presentment currencies.
         /// </summary>
         [JsonProperty("total_line_items_price_set")]
         public PriceSet TotalLineItemsPriceSet { get; set; }
- 
+
         /// <summary>
         /// The total discounts applied to the price of the order in shop and presentment currencies.
         /// </summary>        
         [JsonProperty("total_discounts_set")]
         public PriceSet TotalDiscountsSet { get; set; }
- 
+
         /// <summary>
         /// The total shipping price of the order, excluding discounts and returns, in shop and presentment currencies.
         /// If taxes_included is set to true, then total_shipping_price_set includes taxes.
         /// </summary>
         [JsonProperty("total_shipping_price_set")]
         public PriceSet TotalShippingPriceSet { get; set; }
- 
+
         /// <summary>
         /// The subtotal of the order in shop and presentment currencies.
         /// </summary>
@@ -416,7 +416,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("total_price_set")]
         public PriceSet TotalPriceSet { get; set; }
-        
+
         /// <summary>
         /// The total outstanding amount of the order in the shop currency.
         /// </summary>
@@ -434,7 +434,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("estimated_taxes")]
         public bool? EstimatedTaxes { get; set; }
-        
+
         /// <summary>
         /// The current subtotal price of the order in the shop currency. The value of this field reflects order edits, returns, and refunds.
         /// </summary>
@@ -446,7 +446,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("current_subtotal_price_set")]
         public PriceSet CurrentSubtotalPriceSet { get; set; }
-        
+
         /// <summary>
         /// The current total discounts on the order in the shop currency. The value of this field reflects order edits, returns, and refunds.
         /// </summary>
@@ -458,7 +458,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("current_total_discounts_set")]
         public PriceSet CurrentTotalDiscountsSet { get; set; }
-        
+
         /// <summary>
         /// The current total price of the order in the shop currency. The value of this field reflects order edits, returns, and refunds.
         /// </summary>
@@ -470,7 +470,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("current_total_price_set")]
         public PriceSet CurrentTotalPriceSet { get; set; }
-        
+
         /// <summary>
         /// The current total taxes charged on the order in the shop currency. The value of this field reflects order edits, returns, or refunds.
         /// </summary>
@@ -482,8 +482,8 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("current_total_tax_set")]
         public PriceSet CurrentTotalTaxSet { get; set; }
-        
- 		/// <summary>
+
+        /// <summary>
         /// The terms and conditions under which a payment should be processed.
         /// </summary>
         [JsonProperty("payment_terms")]

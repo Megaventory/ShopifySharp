@@ -66,13 +66,13 @@ namespace ShopifySharp
             {
                 case IEnumerable<long> longs:
                     return Join(longs);
-                
+
                 case IEnumerable<int> ints:
                     return Join(ints);
-                
+
                 case IEnumerable<string> strings:
                     return Join(strings);
-                
+
                 case IEnumerable<bool> bools:
                     return Join(bools);
             }

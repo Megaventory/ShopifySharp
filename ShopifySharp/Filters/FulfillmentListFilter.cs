@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -10,16 +10,16 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("since_id")]
         public long? SinceId { get; set; }
-        
+
         [JsonProperty("created_at_min")]
         public DateTimeOffset? CreatedAtMin { get; set; }
-        
+
         [JsonProperty("created_at_max")]
         public DateTimeOffset? CreatedAtMax { get; set; }
-        
+
         [JsonProperty("updated_at_min")]
         public DateTimeOffset? UpdatedAtMin { get; set; }
-        
+
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
     }

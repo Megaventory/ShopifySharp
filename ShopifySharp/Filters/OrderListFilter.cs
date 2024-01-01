@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace ShopifySharp.Filters
 {
@@ -26,7 +26,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("fulfillment_status")]
         public string FulfillmentStatus { get; set; }
-        
+
         /// <summary>
         /// Restrict results to those created at or after date.
         /// </summary>
@@ -38,7 +38,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("created_at_max")]
         public DateTimeOffset? CreatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Restrict results to those created at or before date.
         /// </summary>
@@ -50,7 +50,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Show orders imported after date.
         /// </summary>
@@ -68,13 +68,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("attribution_app_id")]
         public string AttributionAppId { get; set; }
-        
+
         /// <summary>
         /// Retrieve only orders specified by a comma-separated list of order IDs.
         /// </summary>
         [JsonProperty("ids")]
         public IEnumerable<long> Ids { get; set; }
-        
+
         /// <summary>
         /// Retrieve only orders specified by a comma-separated list of order IDs.
         /// </summary>

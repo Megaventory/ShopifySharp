@@ -4,7 +4,7 @@ using System;
 namespace ShopifySharp
 {
     public class PriceRuleDiscountCode : ShopifyObject
-    {        
+    {
         /// <summary>
         /// The discount code.
         /// </summary>

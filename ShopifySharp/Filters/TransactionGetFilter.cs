@@ -9,7 +9,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("fields")]
         public string Fields { get; set; }
-        
+
         /// <summary>
         /// Show amounts in the shop currency. 
         /// </summary>

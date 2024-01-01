@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -72,7 +72,7 @@ namespace ShopifySharp
 
             var message = requestResult.Result["errors"].FirstOrDefault()?["message"]?.ToString();
 
-            throw new ShopifyException(requestResult.Response, HttpStatusCode.OK, errorList, message, requestResult.RawResult, "");
+            throw new ShopifyException(requestResult.Response, HttpStatusCode.OK, errorList, message, requestResult.RawResult, string.Empty);
         }
     }
 }

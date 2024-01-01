@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace ShopifySharp
 {
@@ -13,7 +13,7 @@ namespace ShopifySharp
 
         public static string GetMultipassUrl(
             Customer userData,
-            string shopifyUrl, 
+            string shopifyUrl,
             string multipassSecret
             )
         {

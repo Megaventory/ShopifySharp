@@ -127,7 +127,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("parent_id")]
         public long? ParentId { get; set; }
-        
+
         /// <summary>
         /// This property is undocumented by Shopify.
         /// </summary>

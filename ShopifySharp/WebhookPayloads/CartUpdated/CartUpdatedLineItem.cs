@@ -1,14 +1,14 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ShopifySharp.WebhookPayloads.CartUpdated
 {
     public class CartUpdatedLineItem : ShopifyObject
     {
-        #nullable enable
+#nullable enable
         [JsonProperty("properties")]
         public IDictionary<string, object>? Properties { get; set; }
-        #nullable disable
+#nullable disable
 
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
@@ -43,10 +43,10 @@ namespace ShopifySharp.WebhookPayloads.CartUpdated
         [JsonProperty("product_id")]
         public long ProductId { get; set; }
 
-        #nullable enable
+#nullable enable
         [JsonProperty("sku")]
         public string? Sku { get; set; }
-        #nullable disable
+#nullable disable
 
         [JsonProperty("taxable")]
         public bool? Taxable { get; set; }

@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
-using ShopifySharp.Filters;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,27 +19,27 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public ScriptTagService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal ScriptTagService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
-         
-		///<inheritdoc />
+        internal ScriptTagService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
+        ///<inheritdoc />
         public virtual async Task<int> CountAsync(ScriptTagCountFilter filter = null, CancellationToken cancellationToken = default)
         {
             return await ExecuteGetAsync<int>("script_tags/count.json", "count", filter, cancellationToken);
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task<ListResult<ScriptTag>> ListAsync(ListFilter<ScriptTag> filter, CancellationToken cancellationToken = default)
         {
             return await ExecuteGetListAsync("script_tags.json", "script_tags", filter, cancellationToken);
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task<ListResult<ScriptTag>> ListAsync(ScriptTagListFilter filter = null, CancellationToken cancellationToken = default)
         {
             return await ListAsync(filter?.AsListFilter(), cancellationToken);
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task<ScriptTag> GetAsync(long tagId, string fields = null, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"script_tags/{tagId}.json");
@@ -53,8 +53,8 @@ namespace ShopifySharp
 
             return response.Result;
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task<ScriptTag> CreateAsync(ScriptTag tag, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri("script_tags.json");
@@ -66,8 +66,8 @@ namespace ShopifySharp
 
             return response.Result;
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task<ScriptTag> UpdateAsync(long scriptTagId, ScriptTag tag, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"script_tags/{scriptTagId}.json");
@@ -79,8 +79,8 @@ namespace ShopifySharp
 
             return response.Result;
         }
-        
-		///<inheritdoc />
+
+        ///<inheritdoc />
         public virtual async Task DeleteAsync(long tagId, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"script_tags/{tagId}.json");

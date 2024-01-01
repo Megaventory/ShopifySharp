@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,27 +19,27 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public ProductImageService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal ProductImageService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
-		///<inheritdoc />
+        internal ProductImageService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
+        ///<inheritdoc />
         public virtual async Task<int> CountAsync(long productId, ProductImageCountFilter filter = null, CancellationToken cancellationToken = default)
         {
             return await ExecuteGetAsync<int>($"products/{productId}/images/count.json", "count", filter, cancellationToken);
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<ListResult<ProductImage>> ListAsync(long productId, ListFilter<ProductImage> filter = null, CancellationToken cancellationToken = default)
         {
             return await ExecuteGetListAsync($"products/{productId}/images.json", "images", filter, cancellationToken);
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<ProductImage> GetAsync(long productId, long imageId, string fields = null, CancellationToken cancellationToken = default)
         {
             return await ExecuteGetAsync<ProductImage>($"products/{productId}/images/{imageId}.json", "image", fields, cancellationToken);
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<ProductImage> CreateAsync(long productId, ProductImage image, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"products/{productId}/images.json");
@@ -52,7 +52,7 @@ namespace ShopifySharp
             return response.Result;
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<ProductImage> UpdateAsync(long productId, long productImageId, ProductImage image, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"products/{productId}/images/{productImageId}.json");
@@ -65,7 +65,7 @@ namespace ShopifySharp
             return response.Result;
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task DeleteAsync(long productId, long imageId, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"products/{productId}/images/{imageId}.json");

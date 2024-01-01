@@ -1,7 +1,7 @@
+using ShopifySharp.Entities.SalesChannel;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ShopifySharp.Entities.SalesChannel;
 
 namespace ShopifySharp
 {

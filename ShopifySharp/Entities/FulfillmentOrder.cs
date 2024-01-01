@@ -1,6 +1,6 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace ShopifySharp
 {
@@ -111,7 +111,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("international_duties")]
         public FulfillmentInternationalDuties InternationalDuties { get; set; }
-        
+
         /// <summary>
         /// The date and time when the fulfillment order was created in Shopify.
         /// </summary>

@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public InventoryItemService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal InventoryItemService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal InventoryItemService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<ListResult<InventoryItem>> ListAsync(ListFilter<InventoryItem> filter, CancellationToken cancellationToken = default) =>
             await ExecuteGetListAsync($"inventory_items.json", "inventory_items", filter, cancellationToken);
@@ -34,15 +34,15 @@ namespace ShopifySharp
             await ExecuteGetAsync<InventoryItem>($"inventory_items/{inventoryItemId}.json", "inventory_item", cancellationToken: cancellationToken);
 
         /// <inheritdoc />
-        public virtual async Task<InventoryItem> UpdateAsync( long inventoryItemId, InventoryItem inventoryItem, CancellationToken cancellationToken = default)
+        public virtual async Task<InventoryItem> UpdateAsync(long inventoryItemId, InventoryItem inventoryItem, CancellationToken cancellationToken = default)
         {
-            var req = BuildRequestUri( $"inventory_items/{inventoryItemId}.json" );
-            var content = new JsonContent( new
+            var req = BuildRequestUri($"inventory_items/{inventoryItemId}.json");
+            var content = new JsonContent(new
             {
                 inventory_item = inventoryItem
-            } );
+            });
 
-            var response = await ExecuteRequestAsync<InventoryItem>( req, HttpMethod.Put, cancellationToken, content, "inventory_item");
+            var response = await ExecuteRequestAsync<InventoryItem>(req, HttpMethod.Put, cancellationToken, content, "inventory_item");
             return response.Result;
         }
     }

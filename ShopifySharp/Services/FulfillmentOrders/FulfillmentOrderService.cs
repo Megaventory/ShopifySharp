@@ -1,10 +1,10 @@
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using System;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public FulfillmentOrderService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal FulfillmentOrderService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal FulfillmentOrderService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<FulfillmentOrder> CancelAsync(long fulfillmentOrderId, CancellationToken cancellationToken = default)
         {
@@ -104,7 +104,7 @@ namespace ShopifySharp
         /// <inheritdoc />
         public virtual async Task<FulfillmentOrder> RescheduleAsync(long fulfillmentOrderId, DateTimeOffset newFulfillAt, CancellationToken cancellationToken = default)
         {
-            var body  = new
+            var body = new
             {
                 new_fulfill_at = newFulfillAt,
             }.ToDictionary();

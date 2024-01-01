@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Converters
 {
@@ -10,7 +10,7 @@ namespace ShopifySharp.Converters
     {
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if(reader.Value?.ToString() == null || reader.Value?.ToString() == "")
+            if (reader.Value?.ToString() == null || reader.Value?.ToString() == string.Empty)
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace ShopifySharp.Converters
             {
                 bool boolean = bool.Parse(value.ToString());
 
-                if(boolean == false)
+                if (boolean == false)
                 {
                     writer.WriteNull();
                 }
@@ -52,15 +52,15 @@ namespace ShopifySharp.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            if(objectType == typeof(string))
+            if (objectType == typeof(string))
             {
                 return true;
             }
-            else if(objectType == typeof(bool))
+            else if (objectType == typeof(bool))
             {
                 return true;
             }
-            else if(objectType == typeof(Nullable))
+            else if (objectType == typeof(Nullable))
             {
                 return true;
             }

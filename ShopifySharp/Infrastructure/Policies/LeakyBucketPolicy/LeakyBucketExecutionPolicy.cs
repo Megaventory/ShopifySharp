@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using ShopifySharp.Infrastructure;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Infrastructure;
-using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -87,8 +87,8 @@ namespace ShopifySharp
                             }
                         }
 
-                        if (jsonDoc.RootElement.TryGetProperty("errors", out var errors) && 
-                            errors.EnumerateArray().Any(error => error.TryGetProperty("extensions", out var extensions) && 
+                        if (jsonDoc.RootElement.TryGetProperty("errors", out var errors) &&
+                            errors.EnumerateArray().Any(error => error.TryGetProperty("extensions", out var extensions) &&
                                                                  extensions.TryGetProperty("code", out var code) &&
                                                                  code.GetString() == "THROTTLED"))
                         {

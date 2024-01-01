@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,15 +19,15 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public InventoryLevelService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal InventoryLevelService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal InventoryLevelService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<ListResult<InventoryLevel>> ListAsync(ListFilter<InventoryLevel> filter, CancellationToken cancellationToken = default) =>
-			await ExecuteGetListAsync($"inventory_levels.json", "inventory_levels", filter, cancellationToken);
+            await ExecuteGetListAsync($"inventory_levels.json", "inventory_levels", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<InventoryLevel>> ListAsync(InventoryLevelListFilter filter, CancellationToken cancellationToken = default) =>
-			await ListAsync(filter?.AsListFilter(), cancellationToken);
+            await ListAsync(filter?.AsListFilter(), cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task DeleteAsync(long inventoryItemId, long locationId, CancellationToken cancellationToken = default)
@@ -41,12 +41,12 @@ namespace ShopifySharp
         {
             var req = BuildRequestUri($"inventory_levels/set.json");
             var body = updatedInventoryLevel.ToDictionary();
-            
+
             body.Add("disconnect_if_necessary", disconnectIfNecessary);
-            
+
             var content = new JsonContent(body);
             var response = await ExecuteRequestAsync<InventoryLevel>(req, HttpMethod.Post, cancellationToken, content, "inventory_level");
-            
+
             return response.Result;
         }
 
@@ -57,7 +57,7 @@ namespace ShopifySharp
             var body = updatedInventoryLevel.ToDictionary();
             var content = new JsonContent(body);
             var response = await ExecuteRequestAsync<InventoryLevel>(req, HttpMethod.Post, cancellationToken, content, "inventory_level");
-            
+
             return response.Result;
         }
 
@@ -72,7 +72,7 @@ namespace ShopifySharp
                 relocate_if_necessary = relocateIfNecessary
             });
             var response = await ExecuteRequestAsync<InventoryLevel>(req, HttpMethod.Post, cancellationToken, content, "inventory_level");
-            
+
             return response.Result;
         }
     }

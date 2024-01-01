@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace ShopifySharp.Filters 
+namespace ShopifySharp.Filters
 {
     public class ShopifyPaymentsDisputeListFilter : ListFilter<ShopifyPaymentsDispute>
     {

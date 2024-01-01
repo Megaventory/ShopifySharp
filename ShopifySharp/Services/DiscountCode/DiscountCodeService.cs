@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -16,23 +16,23 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public DiscountCodeService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal DiscountCodeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal DiscountCodeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<ListResult<PriceRuleDiscountCode>> ListAsync(long priceRuleId, ListFilter<PriceRuleDiscountCode> filter, CancellationToken cancellationToken = default) =>
-			await ExecuteGetListAsync($"price_rules/{priceRuleId}/discount_codes.json", "discount_codes", filter, cancellationToken);
+            await ExecuteGetListAsync($"price_rules/{priceRuleId}/discount_codes.json", "discount_codes", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<PriceRuleDiscountCode>> ListAsync(long priceRuleId, PriceRuleDiscountCodeListFilter filter = null, CancellationToken cancellationToken = default) =>
-			await ListAsync(priceRuleId, filter?.AsListFilter(), cancellationToken);
+            await ListAsync(priceRuleId, filter?.AsListFilter(), cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<PriceRuleDiscountCode> GetAsync(long priceRuleId, long discountId, string fields = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<PriceRuleDiscountCode>($"price_rules/{priceRuleId}/discount_codes/{discountId}.json", "discount_code", fields, cancellationToken);
+            await ExecuteGetAsync<PriceRuleDiscountCode>($"price_rules/{priceRuleId}/discount_codes/{discountId}.json", "discount_code", fields, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<PriceRuleDiscountCode> GetAsync(PriceRuleDiscountCodeFilter filter, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<PriceRuleDiscountCode>($"discount_codes/lookup.json", "discount_code", queryParams: filter, cancellationToken);
+            await ExecuteGetAsync<PriceRuleDiscountCode>($"discount_codes/lookup.json", "discount_code", queryParams: filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<PriceRuleDiscountCode> GetAsync(string code, CancellationToken cancellationToken = default)

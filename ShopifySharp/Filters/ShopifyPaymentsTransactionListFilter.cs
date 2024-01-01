@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace ShopifySharp.Filters 
+namespace ShopifySharp.Filters
 {
     public class ShopifyPaymentsTransactionListFilter : ListFilter<ShopifyPaymentsTransaction>
     {

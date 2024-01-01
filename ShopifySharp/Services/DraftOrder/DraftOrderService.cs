@@ -1,11 +1,11 @@
 using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -17,23 +17,23 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public DraftOrderService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal DraftOrderService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal DraftOrderService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(DraftOrderCountFilter filter = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<int>("draft_orders/count.json", "count", filter, cancellationToken);
+            await ExecuteGetAsync<int>("draft_orders/count.json", "count", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<DraftOrder>> ListAsync(ListFilter<DraftOrder> filter = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetListAsync("draft_orders.json", "draft_orders", filter, cancellationToken);
+            await ExecuteGetListAsync("draft_orders.json", "draft_orders", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<DraftOrder>> ListAsync(DraftOrderListFilter filter, CancellationToken cancellationToken = default) =>
-			await ListAsync((ListFilter<DraftOrder>)filter, cancellationToken);
+            await ListAsync((ListFilter<DraftOrder>)filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<DraftOrder> GetAsync(long id, string fields = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<DraftOrder>($"draft_orders/{id}.json", "draft_order", fields, cancellationToken);
+            await ExecuteGetAsync<DraftOrder>($"draft_orders/{id}.json", "draft_order", fields, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<DraftOrder> CreateAsync(DraftOrder order, bool useCustomerDefaultAddress, CancellationToken cancellationToken = default)

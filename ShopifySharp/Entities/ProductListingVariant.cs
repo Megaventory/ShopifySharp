@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace ShopifySharp
 {
-    public class ProductListingVariant: ShopifyObject
+    public class ProductListingVariant : ShopifyObject
     {
-        
+
         /// <summary>
         /// Available current product variant
         /// </summary>

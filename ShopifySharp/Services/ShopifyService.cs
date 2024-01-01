@@ -1,23 +1,23 @@
 ﻿// ReSharper disable InconsistentNaming
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using ShopifySharp.Credentials;
+using ShopifySharp.Filters;
+using ShopifySharp.Infrastructure;
+using ShopifySharp.Lists;
+using ShopifySharp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using ShopifySharp.Infrastructure;
-using Newtonsoft.Json;
 using System.Threading;
-using ShopifySharp.Credentials;
-using ShopifySharp.Lists;
-using ShopifySharp.Filters;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
     public abstract class ShopifyService : IShopifyService
     {
-        #nullable enable
+#nullable enable
 
         public virtual string APIVersion => "2023-07";
         public virtual bool SupportsAPIVersioning => true;
@@ -87,7 +87,7 @@ namespace ShopifySharp
             return uriBuilder.Uri;
         }
 
-        #nullable disable
+#nullable disable
 
         /// <summary>
         /// Sets the execution policy for this instance only. This policy will always be used over the global execution policy.

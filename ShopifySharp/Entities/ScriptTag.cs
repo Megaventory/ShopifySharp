@@ -6,7 +6,7 @@ namespace ShopifySharp
     /// <summary>
     /// An object representing remote javascript tags that are loaded into the pages of a shop's storefront.
     /// </summary>
-    public class ScriptTag: ShopifyObject
+    public class ScriptTag : ShopifyObject
     {
         /// <summary>
         /// The date and time when the <see cref="ScriptTag"/> was created.

@@ -1,22 +1,22 @@
-﻿using System;
+﻿using ShopifySharp.Entities.SalesChannel;
+using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using ShopifySharp.Entities.SalesChannel;
-using ShopifySharp.Infrastructure;
-using ShopifySharp.Utilities;
 
 namespace ShopifySharp
 {
     /// <summary>
     ///  A service use the Checkout API to let customers purchase products from Shopify stores that have installed your sales channel.
     /// </summary>
-    public class CheckoutSalesChannelService: ShopifyService, ICheckoutSalesChannelService
+    public class CheckoutSalesChannelService : ShopifyService, ICheckoutSalesChannelService
     {
         public CheckoutSalesChannelService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal CheckoutSalesChannelService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal CheckoutSalesChannelService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<CheckoutSalesChannel> GetAsync(string token, CancellationToken cancellationToken = default)
         {
@@ -33,7 +33,7 @@ namespace ShopifySharp
             var req = BuildRequestUri("checkouts.json");
 
             var response = await ExecuteRequestAsync<CheckoutSalesChannel>(req, HttpMethod.Post, cancellationToken,
-                new JsonContent(new {checkout}), "checkout");
+                new JsonContent(new { checkout }), "checkout");
             return response.Result;
         }
 
@@ -73,7 +73,7 @@ namespace ShopifySharp
             var req = BuildRequestUri($"checkouts/{token}/payments.json");
 
             var response = await ExecuteRequestAsync<PaymentSalesChannel>(req, HttpMethod.Post, cancellationToken,
-                new JsonContent(new {payment = createPayment}), "payment");
+                new JsonContent(new { payment = createPayment }), "payment");
             return response.Result;
         }
 

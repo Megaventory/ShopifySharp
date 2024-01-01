@@ -192,7 +192,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("pre_tax_price_set")]
         public PriceSet PreTaxPriceSet { get; set; }
-        
+
         /// <summary>
         /// A list of duty objects, each containing information about a duty on the line item
         /// </summary>

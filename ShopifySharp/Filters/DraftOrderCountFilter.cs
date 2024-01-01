@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Filters
 {
@@ -10,7 +10,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("since_id")]
         public long? SinceId { get; set; }
-        
+
         /// <summary>
         /// Restricts results to those last updated after date.
         /// </summary>
@@ -22,7 +22,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Only return orders with the given status. Known values are "open" (default), "invoice_sent", and "completed".
         /// </summary>

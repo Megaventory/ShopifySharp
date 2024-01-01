@@ -1,6 +1,6 @@
+using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace ShopifySharp
 {

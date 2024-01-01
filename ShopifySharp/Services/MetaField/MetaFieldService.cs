@@ -1,10 +1,10 @@
 using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,47 +19,47 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public MetaFieldService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal MetaFieldService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal MetaFieldService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(CancellationToken cancellationToken = default) =>
-			await _CountAsync("metafields/count.json", cancellationToken);
+            await _CountAsync("metafields/count.json", cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(long resourceId, string resourceType, CancellationToken cancellationToken = default) =>
-			await _CountAsync($"{resourceType.ToLower()}/{resourceId}/metafields/count.json", cancellationToken);
+            await _CountAsync($"{resourceType.ToLower()}/{resourceId}/metafields/count.json", cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(long resourceId, string resourceType, long parentResourceId, string parentResourceType, CancellationToken cancellationToken = default) =>
-			await _CountAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields/count.json", cancellationToken);
+            await _CountAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields/count.json", cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(ListFilter<MetaField> filter, CancellationToken cancellationToken = default) =>
-			await _ListAsync("metafields.json", filter, cancellationToken);
+            await _ListAsync("metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(long resourceId, string resourceType, ListFilter<MetaField> filter, CancellationToken cancellationToken = default) =>
-			await _ListAsync($"{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
+            await _ListAsync($"{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(long resourceId, string resourceType, long parentResourceId, string parentResourceType, ListFilter<MetaField> filter, CancellationToken cancellationToken = default) =>
-			await _ListAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
+            await _ListAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(MetaFieldFilter filter = null, CancellationToken cancellationToken = default) =>
-			await _ListAsync("metafields.json", filter, cancellationToken);
+            await _ListAsync("metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(long resourceId, string resourceType, MetaFieldFilter filter = null, CancellationToken cancellationToken = default) =>
-			await _ListAsync($"{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
+            await _ListAsync($"{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<MetaField>> ListAsync(long resourceId, string resourceType, long parentResourceId, string parentResourceType, MetaFieldFilter filter = null, CancellationToken cancellationToken = default) =>
-			await _ListAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
+            await _ListAsync($"{parentResourceType.ToLower()}/{parentResourceId}/{resourceType.ToLower()}/{resourceId}/metafields.json", filter, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<MetaField> GetAsync(long metafieldId, string fields = null, CancellationToken cancellationToken = default) =>
-			await ExecuteGetAsync<MetaField>($"metafields/{metafieldId}.json", "metafield", fields, cancellationToken);
+            await ExecuteGetAsync<MetaField>($"metafields/{metafieldId}.json", "metafield", fields, cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<MetaField> CreateAsync(MetaField metafield, CancellationToken cancellationToken = default)
@@ -109,7 +109,7 @@ namespace ShopifySharp
                 metafield = metafield
             });
             var response = await ExecuteRequestAsync<MetaField>(req, HttpMethod.Put, cancellationToken, content, "metafield");
-            
+
             return response.Result;
         }
 

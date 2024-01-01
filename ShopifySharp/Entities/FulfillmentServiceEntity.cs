@@ -55,7 +55,7 @@ namespace ShopifySharp
         /// </summary>
         [JsonProperty("requires_shipping_method")]
         public bool? RequiresShippingMethod { get; set; }
-                
+
         /// <summary>
         /// States if the fulfillment service allows products to have more than 1 shipping location
         /// </summary>

@@ -36,7 +36,7 @@ namespace ShopifySharp
 
         /// <summary>
         /// The path to the asset within a shop, prefixed with the asset's 'bucket' type,
-       ///  e.g. 'templates/index.liquid' or 'assets/bg-body.gif'.
+        ///  e.g. 'templates/index.liquid' or 'assets/bg-body.gif'.
         /// </summary>
         [JsonProperty("key")]
         public string Key { get; set; }

@@ -1,10 +1,10 @@
 using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
 using ShopifySharp.Utilities;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -16,8 +16,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public PriceRuleService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal PriceRuleService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal PriceRuleService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<ListResult<PriceRule>> ListAsync(ListFilter<PriceRule> filter, CancellationToken cancellationToken = default)
         {
@@ -41,7 +41,7 @@ namespace ShopifySharp
             }
 
             var response = await ExecuteRequestAsync<PriceRule>(req, HttpMethod.Get, cancellationToken, rootElement: "price_rule");
-            
+
             return response.Result;
         }
 
@@ -54,7 +54,7 @@ namespace ShopifySharp
             {
                 price_rule = body
             });
-            var response =  await ExecuteRequestAsync<PriceRule>(req, HttpMethod.Post, cancellationToken, content, "price_rule");
+            var response = await ExecuteRequestAsync<PriceRule>(req, HttpMethod.Post, cancellationToken, content, "price_rule");
 
             return response.Result;
         }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace ShopifySharp.Filters
 {
@@ -14,13 +14,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("since_id")]
         public long? SinceId { get; set; }
-        
+
         /// <summary>
         /// Show only those with ids in the list.
         /// </summary>
         [JsonProperty("ids")]
         public IEnumerable<long> Ids { get; set; }
-        
+
         /// <summary>
         /// Filter to smart collections with the given title.
         /// </summary>
@@ -38,7 +38,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("product_id")]
         public long? ProductId { get; set; }
-        
+
         /// <summary>
         /// Show those updated at or before date.
         /// </summary>
@@ -50,7 +50,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("updated_at_max")]
         public DateTimeOffset? UpdatedAtMax { get; set; }
-        
+
         /// <summary>
         /// Show those published at or before date.
         /// </summary>
@@ -62,7 +62,7 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("published_at_max")]
         public DateTimeOffset? PublishedAtMax { get; set; }
-        
+
         /// <summary>
         /// Restrict results to those with a given published status. Known values: published, unpublished, any. Default: any. 
         /// </summary>

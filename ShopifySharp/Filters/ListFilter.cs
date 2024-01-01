@@ -18,13 +18,13 @@ namespace ShopifySharp.Filters
         /// </summary>
         [JsonProperty("limit")]
         public int? Limit { get; set; }
-        
+
         /// <summary>
         /// Comma-separated list of which fields to show in the results. This parameter only works for some endpoints.
         /// </summary>
         [JsonProperty("fields")]
         public string Fields { get; set; }
-        
+
         /// <remarks>
         /// This constructor is protected to prevent developers from using `new ListFilter()`, but to make creating your
         /// own ListFilter easier.
@@ -32,7 +32,7 @@ namespace ShopifySharp.Filters
         /// </remarks>
         protected ListFilter()
         {
-            
+
         }
 
         public ListFilter(string pageInfo, int? limit, string fields = null)
@@ -42,7 +42,7 @@ namespace ShopifySharp.Filters
             Fields = fields;
         }
 
-        public ListFilter<T> AsListFilter() => this; 
+        public ListFilter<T> AsListFilter() => this;
 
         public static readonly ListFilter<T> Empty = new ListFilter<T>();
     }

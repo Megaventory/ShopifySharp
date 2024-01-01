@@ -31,7 +31,7 @@
             {
                 MaxAvailable = (int)maximumAvailable,
                 RestoreRate = (int)restoreRate,
-                CurrentlyAvailable = (int)currentlyAvailable,    
+                CurrentlyAvailable = (int)currentlyAvailable,
                 RequestedQueryCost = requestedQueryCost,
                 ActualQueryCost = actualQueryCost,
             };

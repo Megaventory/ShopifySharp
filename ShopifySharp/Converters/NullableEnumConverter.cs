@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
-using Newtonsoft.Json;
-using System.Runtime.Serialization;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace ShopifySharp.Converters
 {
@@ -17,7 +17,7 @@ namespace ShopifySharp.Converters
         {
             T parsed;
 
-            if (!Enum.TryParse(reader.Value?.ToString() ?? "", true, out parsed))
+            if (!Enum.TryParse(reader.Value?.ToString() ?? string.Empty, true, out parsed))
             {
                 // Some EnumMember values have an '_', '-' or '/' in their value and will fail the TryParse or IsDefined checks.
                 // Use reflection to pull all of the enums values, get their EnumMember value and check if there's a match.

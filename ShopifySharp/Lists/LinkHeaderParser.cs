@@ -40,11 +40,11 @@ namespace ShopifySharp.Lists
 
             var decodedUriQuery = Uri.UnescapeDataString(uri.Query);
 
-            string GetQueryParam(string name) 
+            string GetQueryParam(string name)
             {
                 return decodedUriQuery.Split('?', '&')
                     .FirstOrDefault(p => p.StartsWith($"{name}="))
-                    ?.Substring ($"{name}=".Length);
+                    ?.Substring($"{name}=".Length);
             }
 
             string pageInfo = GetQueryParam("page_info");
@@ -56,7 +56,7 @@ namespace ShopifySharp.Lists
             }
 
             int.TryParse(GetQueryParam("limit"), out int limit);
-            
+
 
             return new PagingLink<T>(matchedUrl, pageInfo, limit != 0 ? (int?)limit : null, fields ?? null);
         }

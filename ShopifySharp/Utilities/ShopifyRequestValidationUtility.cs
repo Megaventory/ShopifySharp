@@ -1,7 +1,8 @@
-using System;
+using Microsoft.Extensions.Primitives;
 #if NET6_0_OR_GREATER
 using System.Buffers;
 #endif
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.Extensions.Primitives;
 
 namespace ShopifySharp.Utilities;
 
@@ -92,13 +92,13 @@ public interface IShopifyRequestValidationUtility
     /// <returns>A boolean indicating whether the webhook is authentic or not.</returns>
     bool IsAuthenticWebhook(HttpRequestHeaders requestHeaders, string requestBody, string shopifySecretKey);
 
-    #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
     bool IsAuthenticWebhook(
         IEnumerable<KeyValuePair<string, StringValues>> requestHeaders,
         ReadOnlyMemory<byte> requestBody,
         ReadOnlyMemory<byte> shopifySecretKey
     );
-    #endif
+#endif
 }
 
 public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
@@ -131,7 +131,7 @@ public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
         var hash = hmacHasher.ComputeHash(Encoding.UTF8.GetBytes(string.Join("&", kvps)));
 
         //Convert bytes back to string, replacing dashes, to get the final signature.
-        var calculatedSignature = BitConverter.ToString(hash).Replace("-", "");
+        var calculatedSignature = BitConverter.ToString(hash).Replace("-", string.Empty);
 
         //Request is valid if the calculated signature matches the signature from the querystring.
         return calculatedSignature.ToUpper() == hmac.ToUpper();
@@ -171,7 +171,7 @@ public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
         var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Join(null, kvps)));
 
         //Convert bytes back to string, replacing dashes, to get the final signature.
-        var calculatedSignature = BitConverter.ToString(hash).Replace("-", "");
+        var calculatedSignature = BitConverter.ToString(hash).Replace("-", string.Empty);
 
         //Request is valid if the calculated signature matches the signature from the querystring.
         return calculatedSignature.ToUpper() == signature.ToUpper();
@@ -243,7 +243,7 @@ public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
         return hash == hmacHeader;
     }
 
-    #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
     /// <inheritdoc />
     public bool IsAuthenticWebhook(IEnumerable<KeyValuePair<string, StringValues>> requestHeaders, ReadOnlyMemory<byte> requestBody, ReadOnlyMemory<byte> shopifySecretKey)
     {
@@ -288,7 +288,7 @@ public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
             ArrayPool<byte>.Shared.Return(hmacHeaderBytes);
         }
     }
-    #endif
+#endif
 
     private static string PrepareQuerystring(IEnumerable<KeyValuePair<string, StringValues>> querystring, string joinWith)
     {
@@ -323,14 +323,14 @@ public class ShopifyRequestValidationUtility : IShopifyRequestValidationUtility
         }
 
         if (string.IsNullOrEmpty(result))
-            return "";
+            return string.Empty;
 
         //Important: Replace % before replacing &. Else second replace will replace those %25s.
-        result = (result.Replace("%", "%25").Replace("&", "%26")) ?? "";
+        result = (result.Replace("%", "%25").Replace("&", "%26")) ?? string.Empty;
 
         if (isKey)
         {
-            result = result.Replace("=", "%3D").Replace("[]", "");
+            result = result.Replace("=", "%3D").Replace("[]", string.Empty);
         }
 
         return result;

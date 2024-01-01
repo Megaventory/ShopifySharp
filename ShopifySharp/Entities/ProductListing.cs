@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace ShopifySharp
 {
     /// <summary>
     /// An entity representing a Shopify product listing.
     /// </summary>
-    public class ProductListing: ShopifyObject
+    public class ProductListing : ShopifyObject
     {
         /// <summary>
         /// Available current product

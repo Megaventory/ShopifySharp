@@ -1,11 +1,11 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -20,8 +20,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public SmartCollectionService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal SmartCollectionService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal SmartCollectionService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<int> CountAsync(SmartCollectionCountFilter filter = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<int>("smart_collections/count.json", "count", filter, cancellationToken);
@@ -77,7 +77,7 @@ namespace ShopifySharp
                 { "id", smartCollectionId },
                 { "published", true }
             };
-            var content = new JsonContent(new 
+            var content = new JsonContent(new
             {
                 smart_collection = body
             });
@@ -95,7 +95,7 @@ namespace ShopifySharp
                 { "id", smartCollectionId },
                 { "published", false }
             };
-            var content = new JsonContent(new 
+            var content = new JsonContent(new
             {
                 smart_collection = body
             });

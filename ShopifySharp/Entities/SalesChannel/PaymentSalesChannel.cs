@@ -1,9 +1,9 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ShopifySharp.Entities.SalesChannel
 {
-    public class PaymentSalesChannel: ShopifyObject
+    public class PaymentSalesChannel : ShopifyObject
     {
         [JsonProperty("unique_token")]
         public string UniqueToken { get; set; }

@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -19,8 +19,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public ThemeService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal ThemeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal ThemeService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
         public virtual async Task<IEnumerable<Theme>> ListAsync(ThemeListFilter filter = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<IEnumerable<Theme>>("themes.json", "themes", filter, cancellationToken);
@@ -40,15 +40,15 @@ namespace ShopifySharp
             return response.Result;
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<Theme> CreateAsync(Theme theme, CancellationToken cancellationToken = default) =>
             await _CreateAsync(theme, cancellationToken);
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<Theme> CreateAsync(Theme theme, string sourceUrl, CancellationToken cancellationToken = default) =>
             await _CreateAsync(theme, cancellationToken, sourceUrl);
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task<Theme> UpdateAsync(long themeId, Theme theme, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"themes/{themeId}.json");
@@ -61,7 +61,7 @@ namespace ShopifySharp
             return response.Result;
         }
 
-		///<inheritdoc />
+        ///<inheritdoc />
         public virtual async Task DeleteAsync(long themeId, CancellationToken cancellationToken = default)
         {
             var req = BuildRequestUri($"themes/{themeId}.json");

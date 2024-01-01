@@ -1,10 +1,10 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
-using ShopifySharp.Utilities;
+using System.Threading.Tasks;
 
 namespace ShopifySharp
 {
@@ -16,14 +16,14 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public FulfillmentServiceService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal FulfillmentServiceService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
- 
+        internal FulfillmentServiceService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
+
         /// <inheritdoc />
-        public virtual async Task<IEnumerable<FulfillmentServiceEntity>> ListAsync(FulfillmentServiceListFilter filter = null, CancellationToken cancellationToken = default) => 
+        public virtual async Task<IEnumerable<FulfillmentServiceEntity>> ListAsync(FulfillmentServiceListFilter filter = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<List<FulfillmentServiceEntity>>("fulfillment_services.json", "fulfillment_services", filter, cancellationToken);
 
         /// <inheritdoc />
-        public virtual async Task<FulfillmentServiceEntity> GetAsync(long fulfillmentServiceId, string fields = null, CancellationToken cancellationToken = default) => 
+        public virtual async Task<FulfillmentServiceEntity> GetAsync(long fulfillmentServiceId, string fields = null, CancellationToken cancellationToken = default) =>
             await ExecuteGetAsync<FulfillmentServiceEntity>($"fulfillment_services/{fulfillmentServiceId}.json", "fulfillment_service", fields, cancellationToken);
 
         /// <inheritdoc />

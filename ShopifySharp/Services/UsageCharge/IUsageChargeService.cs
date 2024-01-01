@@ -1,7 +1,7 @@
+using ShopifySharp.Filters;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ShopifySharp.Filters;
 
 namespace ShopifySharp
 {
