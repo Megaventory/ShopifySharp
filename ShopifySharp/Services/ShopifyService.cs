@@ -206,11 +206,7 @@ namespace ShopifySharp
             {
                 using var response = await _Client.SendAsync(requestMessage, cancellationToken);
 
-                #if NETSTANDARD2_0
                 var rawResult = await response.Content.ReadAsStringAsync();
-                #else
-                var rawResult = await response.Content.ReadAsStringAsync(cancellationToken);
-                #endif
 
                 //Check for and throw exception when necessary.
                 CheckResponseExceptions(response, rawResult);
