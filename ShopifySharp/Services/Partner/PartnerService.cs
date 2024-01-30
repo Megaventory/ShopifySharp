@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using ShopifySharp.Infrastructure;
-using ShopifySharp.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
+using ShopifySharp.Utilities;
 
 namespace ShopifySharp
 {
@@ -58,6 +58,7 @@ namespace ShopifySharp
                 return;
             }
 
+            var requestId = ParseRequestIdResponseHeader(requestResult.ResponseHeaders);
             var errorList = new List<string>();
 
             foreach (var error in requestResult.Result["errors"])
@@ -70,9 +71,9 @@ namespace ShopifySharp
                 }
             }
 
-            var message = requestResult.Result["errors"].FirstOrDefault()?["message"]?.ToString();
+            var message = errorList.FirstOrDefault() ?? "Unable to parse Shopify's error response, please inspect exception's RawBody property and report this issue to the ShopifySharp maintainers.";
 
-            throw new ShopifyException(requestResult.Response, HttpStatusCode.OK, errorList, message, requestResult.RawResult, string.Empty);
+            throw new ShopifyHttpException(HttpStatusCode.OK, errorList, message, requestResult.RawResult, requestId);
         }
     }
 }

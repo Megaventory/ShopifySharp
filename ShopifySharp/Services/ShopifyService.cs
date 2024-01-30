@@ -1,23 +1,24 @@
 ﻿// ReSharper disable InconsistentNaming
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using ShopifySharp.Credentials;
-using ShopifySharp.Filters;
-using ShopifySharp.Infrastructure;
-using ShopifySharp.Lists;
-using ShopifySharp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using ShopifySharp.Infrastructure;
+using Newtonsoft.Json;
+using System.Threading;
+using ShopifySharp.Credentials;
+using ShopifySharp.Lists;
+using ShopifySharp.Filters;
+using ShopifySharp.Utilities;
 
 namespace ShopifySharp
 {
     public abstract class ShopifyService : IShopifyService
     {
-#nullable enable
+        #nullable enable
 
         public virtual string APIVersion => "2023-07";
         public virtual bool SupportsAPIVersioning => true;
@@ -87,7 +88,7 @@ namespace ShopifySharp
             return uriBuilder.Uri;
         }
 
-#nullable disable
+        #nullable disable
 
         /// <summary>
         /// Sets the execution policy for this instance only. This policy will always be used over the global execution policy.
@@ -180,9 +181,9 @@ namespace ShopifySharp
         /// <remarks>
         /// The Link header only exists on list requests.
         /// </remarks>
-        private string ReadLinkHeader(HttpResponseMessage response)
+        private string ReadLinkHeader(HttpResponseHeaders responseHeaders)
         {
-            var linkHeaderValues = response.Headers
+            var linkHeaderValues = responseHeaders
                 .FirstOrDefault(h => h.Key.Equals("link", StringComparison.OrdinalIgnoreCase))
                 .Value;
 
@@ -200,27 +201,26 @@ namespace ShopifySharp
             DateParseHandling? dateParseHandlingOverride = null
         )
         {
-            using (var baseRequestMessage = PrepareRequestMessage(uri, method, content, headers))
+            using var baseRequestMessage = PrepareRequestMessage(uri, method, content, headers);
+            var policyResult = await _ExecutionPolicy.Run(baseRequestMessage, async (requestMessage) =>
             {
-                var policyResult = await _ExecutionPolicy.Run(baseRequestMessage, async (requestMessage) =>
-                {
-                    var request = _Client.SendAsync(requestMessage, cancellationToken);
+                using var response = await _Client.SendAsync(requestMessage, cancellationToken);
 
-                    using (var response = await request)
-                    {
-                        var rawResult = await response.Content.ReadAsStringAsync();
+                #if NETSTANDARD2_0
+                var rawResult = await response.Content.ReadAsStringAsync();
+                #else
+                var rawResult = await response.Content.ReadAsStringAsync(cancellationToken);
+                #endif
 
-                        //Check for and throw exception when necessary.
-                        CheckResponseExceptions(response, rawResult);
+                //Check for and throw exception when necessary.
+                CheckResponseExceptions(response, rawResult);
 
-                        var result = method == HttpMethod.Delete ? default : Serializer.Deserialize<T>(rawResult, rootElement, dateParseHandlingOverride);
+                var result = method == HttpMethod.Delete ? default : Serializer.Deserialize<T>(rawResult, rootElement, dateParseHandlingOverride);
 
-                        return new RequestResult<T>(response, result, rawResult, ReadLinkHeader(response));
-                    }
-                }, cancellationToken, graphqlQueryCost);
+                return new RequestResult<T>(response, response.Headers, result, rawResult, ReadLinkHeader(response.Headers));
+            }, cancellationToken, graphqlQueryCost);
 
-                return policyResult;
-            }
+            return policyResult;
         }
 
         /// <summary>
@@ -360,6 +360,8 @@ namespace ShopifySharp
         /// <param name="rawResponse">The response body returned by Shopify.</param>
         public static void CheckResponseExceptions(HttpResponseMessage response, string rawResponse)
         {
+            // TODO: make this method protected virtual so inheriting members can override it (e.g. the PartnerService which is doing its own custom error checking right now)
+
             var statusCode = (int)response.StatusCode;
 
             // No error if response was between 200 and 300.
@@ -368,10 +370,9 @@ namespace ShopifySharp
                 return;
             }
 
-            var requestIdHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("X-Request-Id", StringComparison.OrdinalIgnoreCase));
-            var requestId = requestIdHeader.Value?.FirstOrDefault();
             var code = response.StatusCode;
             var statusMessage = $"{(int)code} {response.ReasonPhrase}";
+            var requestId = ParseRequestIdResponseHeader(response.Headers);
 
             // If the error was caused by reaching the API rate limit, throw a rate limit exception.
             if ((int)code == 429 /* Too many requests */)
@@ -386,16 +387,31 @@ namespace ShopifySharp
                 }
                 else
                 {
-                    var baseMessage = "Exceeded the rate limit for api client. Reduce request rates to resume uninterrupted service.";
+                    const string baseMessage = "Exceeded the rate limit for api client. Reduce request rates to resume uninterrupted service.";
                     rateExceptionMessage = $"({statusMessage}) {baseMessage}";
                     errors = new List<string> { baseMessage };
                 }
 
-                throw new ShopifyRateLimitException(response, code, errors, rateExceptionMessage, rawResponse, requestId);
+                var reason = response.Headers.Contains(RestBucketState.RESPONSE_HEADER_API_CALL_LIMIT)
+                        ? ShopifyRateLimitReason.Other
+                        : ShopifyRateLimitReason.BucketFull;
+                var strRetryAfter = response.Headers
+                    .FirstOrDefault(kvp => kvp.Key == "Retry-After")
+                    .Value
+                    ?.FirstOrDefault();
+                int? retryAfterSeconds = null;
+
+                if (int.TryParse(strRetryAfter, out var retryValue))
+                {
+                    retryAfterSeconds = retryValue;
+                }
+
+                throw new ShopifyRateLimitException(code, errors.ToList(), rateExceptionMessage, rawResponse, requestId, reason, retryAfterSeconds);
             }
 
             var contentType = response.Content.Headers.GetValues("Content-Type").FirstOrDefault();
 
+            // TODO: there's probably a better way to check if the content type is json
             if (contentType.StartsWithIgnoreCase("application/json") || contentType.StartsWithIgnoreCase("text/json"))
             {
                 IEnumerable<string> errors;
@@ -427,13 +443,10 @@ namespace ShopifySharp
                 else
                 {
                     exceptionMessage = $"({statusMessage}) Shopify returned {statusMessage}, but ShopifySharp was unable to parse the response JSON.";
-                    errors = new List<string>
-                    {
-                        exceptionMessage
-                    };
+                    errors = [];
                 }
 
-                throw new ShopifyException(response, code, errors, exceptionMessage, rawResponse, requestId);
+                throw new ShopifyHttpException(code, errors.ToList(), exceptionMessage, rawResponse, requestId);
             }
 
             var message = $"({statusMessage}) Shopify returned {statusMessage}, but there was no JSON to parse into an error message.";
@@ -442,7 +455,7 @@ namespace ShopifySharp
                 message
             };
 
-            throw new ShopifyException(response, code, customErrors, message, rawResponse, requestId);
+            throw new ShopifyHttpException(code, customErrors, message, rawResponse, requestId);
         }
 
         /// <summary>
@@ -450,6 +463,7 @@ namespace ShopifySharp
         /// </summary>
         public static bool TryParseErrorJson(string json, out List<string> output)
         {
+            // TODO: obsolete and replace this with a json error parsing util?
             output = null;
 
             if (string.IsNullOrEmpty(json))
@@ -551,6 +565,13 @@ namespace ShopifySharp
         protected ListResult<T> ParseLinkHeaderToListResult<T>(RequestResult<List<T>> requestResult)
         {
             return new ListResult<T>(requestResult.Result, requestResult.RawLinkHeaderValue == null ? null : LinkHeaderParser.Parse<T>(requestResult.RawLinkHeaderValue));
+        }
+
+        #nullable enable
+        protected static string? ParseRequestIdResponseHeader(HttpResponseHeaders responseHeaders)
+        {
+            const string headerName = "X-Request-Id";
+            return responseHeaders.TryGetValues(headerName, out var headerValues) ? headerValues.First() : null;
         }
     }
 }

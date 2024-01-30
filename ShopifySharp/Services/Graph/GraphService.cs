@@ -134,12 +134,10 @@ namespace ShopifySharp
                     }
                 }
 
-                var message = res["errors"].FirstOrDefault()?["message"]?.ToString();
+                var message = errorList.FirstOrDefault() ?? "Unable to parse Shopify's error response, please inspect exception's RawBody property and report this issue to the ShopifySharp maintainers.";
+                var requestId = ParseRequestIdResponseHeader(requestResult.ResponseHeaders);
 
-                var requestIdHeader = requestResult.Response.Headers.FirstOrDefault(h => h.Key.Equals("X-Request-Id", StringComparison.OrdinalIgnoreCase));
-                var requestId = requestIdHeader.Value?.FirstOrDefault();
-
-                throw new ShopifyException(requestResult.Response, HttpStatusCode.OK, errorList, message, requestResult.RawResult, requestId);
+                throw new ShopifyHttpException(HttpStatusCode.OK, errorList, message, requestResult.RawResult, requestId);
             }
         }
     }

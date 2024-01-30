@@ -1,10 +1,11 @@
 ﻿using ShopifySharp.Filters;
 using ShopifySharp.Lists;
-using ShopifySharp.Utilities;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using ShopifySharp.Infrastructure;
+using ShopifySharp.Utilities;
 
 namespace ShopifySharp
 {
@@ -19,8 +20,8 @@ namespace ShopifySharp
         /// <param name="myShopifyUrl">The shop's *.myshopify.com URL.</param>
         /// <param name="shopAccessToken">An API access token for the shop.</param>
         public ShopifyPaymentsService(string myShopifyUrl, string shopAccessToken) : base(myShopifyUrl, shopAccessToken) { }
-        internal ShopifyPaymentsService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) { }
-
+        internal ShopifyPaymentsService(string shopDomain, string accessToken, IShopifyDomainUtility shopifyDomainUtility) : base(shopDomain, accessToken, shopifyDomainUtility) {}
+ 
         /// <inheritdoc />
         public virtual async Task<bool> IsShopifyPaymentApiEnabledAsync(CancellationToken cancellationToken = default)
         {
@@ -30,7 +31,7 @@ namespace ShopifySharp
                 await this.GetBalanceAsync(cancellationToken);
                 return true;
             }
-            catch (ShopifyException ex) when (ex.HttpStatusCode == HttpStatusCode.NotFound)
+            catch (ShopifyHttpException ex) when (ex.HttpStatusCode == HttpStatusCode.NotFound)
             {
                 return false;
             }
@@ -62,7 +63,7 @@ namespace ShopifySharp
 
         /// <inheritdoc />
         public virtual async Task<ShopifyPaymentsDispute> GetDisputeAsync(long disputeId, CancellationToken cancellationToken = default) =>
-            await ExecuteGetAsync<ShopifyPaymentsDispute>($"shopify_payments/disputes/{disputeId}.json", "dispute", cancellationToken: cancellationToken);
+            await ExecuteGetAsync< ShopifyPaymentsDispute>($"shopify_payments/disputes/{disputeId}.json", "dispute", cancellationToken: cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task<ListResult<ShopifyPaymentsTransaction>> ListTransactionsAsync(ListFilter<ShopifyPaymentsTransaction> filter, CancellationToken cancellationToken = default) =>
