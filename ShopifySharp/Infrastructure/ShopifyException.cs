@@ -24,7 +24,7 @@ public class ShopifyException : Exception
 
     /// The raw string body returned by Shopify.
     [Obsolete("This property has been moved to the " + nameof(ShopifyHttpException) + " and will be removed in a future version of ShopifySharp.")]
-    public string RawBody { get; }
+    public string? RawBody { get; }
 
     public ShopifyException() { }
 

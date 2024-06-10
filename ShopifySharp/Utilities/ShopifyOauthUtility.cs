@@ -48,13 +48,13 @@ public interface IShopifyOauthUtility
         IEnumerable<string>? grants = null
     );
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <summary>
     /// Builds an OAuth authorization URL for Shopify OAuth integration.
     /// </summary>
     /// <param name="options">Options for building the OAuth URL.</param>
     Uri BuildAuthorizationUrl(AuthorizationUrlOptions options);
-    #endif
+#endif
 
     /// <summary>
     /// Authorizes an application installation, generating an access token for the given shop.
@@ -70,13 +70,13 @@ public interface IShopifyOauthUtility
         string clientSecret
     );
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <summary>
     /// Authorizes an application installation, generating an access token for the given shop.
     /// </summary>
     /// <param name="options">Options for performing the authorization.</param>
     Task<AuthorizationResult> AuthorizeAsync(AuthorizeOptions options);
-    #endif
+#endif
 
     /// <summary>
     /// Refreshes an existing store access token using the app's client secret and a refresh token
@@ -95,14 +95,14 @@ public interface IShopifyOauthUtility
         string existingStoreAccessToken
     );
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <summary>
     /// Refreshes an existing store access token using the app's client secret and a refresh token
     /// For more info on rotating tokens, see https://shopify.dev/apps/auth/oauth/rotate-revoke-client-credentials
     /// </summary>
     /// <param name="options">Options for refreshing the access token.</param>
     Task<AuthorizationResult> RefreshAccessTokenAsync(RefreshAccessTokenOptions options);
-    #endif
+#endif
 }
 
 #if NET8_0_OR_GREATER
@@ -191,7 +191,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
 
         if (!string.IsNullOrEmpty(state))
         {
-            qs.Add(new KeyValuePair<string, string>("state", state));
+            qs.Add(new KeyValuePair<string, string>("state", state ?? ""));
         }
 
         if (grants?.Any() == true)
@@ -205,7 +205,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
         return builder.Uri;
     }
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <inheritdoc />
     public Uri BuildAuthorizationUrl(AuthorizationUrlOptions options) =>
         BuildAuthorizationUrl(
@@ -216,7 +216,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
             options.State,
             options.Grants
         );
-    #endif
+#endif
 
     /// <inheritdoc />
     public async Task<AuthorizationResult> AuthorizeAsync(
@@ -245,10 +245,10 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
         ShopifyService.CheckResponseExceptions(await request.GetRequestInfo(), response, rawDataString);
 
         var json = JToken.Parse(rawDataString);
-        return new AuthorizationResult(json.Value<string>("access_token"), json.Value<string>("scope")?.Split(','));
+        return new AuthorizationResult(json.Value<string>("access_token") ?? "", json.Value<string>("scope")?.Split(','));
     }
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <inheritdoc />
     public Task<AuthorizationResult> AuthorizeAsync(AuthorizeOptions options) =>
         AuthorizeAsync(
@@ -257,7 +257,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
             options.ClientId,
             options.ClientSecret
         );
-    #endif
+#endif
 
     /// <inheritdoc />
     public async Task<AuthorizationResult> RefreshAccessTokenAsync(
@@ -289,10 +289,10 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
 
         var json = JToken.Parse(rawDataString);
         // TODO: throw a ShopifyJsonParseException if value is null. Exception should have a RawBody property.
-        return new AuthorizationResult(json.Value<string>("access_token"), json.Value<string>("scope")?.Split(','));
+        return new AuthorizationResult(json.Value<string>("access_token") ?? "", json.Value<string>("scope")?.Split(','));
     }
 
-    #if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
     /// <inheritdoc />
     public Task<AuthorizationResult> RefreshAccessTokenAsync(RefreshAccessTokenOptions options) =>
         RefreshAccessTokenAsync(

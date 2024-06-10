@@ -208,11 +208,7 @@ public abstract class ShopifyService : IShopifyService
         {
             using var response = await _Client.SendAsync(requestMessage, cancellationToken);
 
-#if NETSTANDARD2_0
-                var rawResult = await response.Content.ReadAsStringAsync();
-#else
-            var rawResult = await response.Content.ReadAsStringAsync(cancellationToken);
-#endif
+            var rawResult = await response.Content.ReadAsStringAsync();
 
             //Check for and throw exception when necessary.
             CheckResponseExceptions(await baseRequestMessage.GetRequestInfo(), response, rawResult);

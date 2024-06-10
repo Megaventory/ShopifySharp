@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <TargetFrameworks>net8.0;net472</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotenvfile" Version="2.1.0" />
@@ -15,9 +15,7 @@
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
+	<PackageReference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <None Update="env.yml">
