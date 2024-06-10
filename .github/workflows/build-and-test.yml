@@ -3,6 +3,7 @@ name: Build/Test Pipeline
 on:
   push:
     branches: [ master, setup-github-actions ]
+  workflow_dispatch:
 
 # Cancel any in-progress build/test runs
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
@@ -13,7 +14,7 @@ concurrency:
 jobs:
   build:
     name: "Build"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     environment: "Build Environment"
 
     steps:
@@ -25,13 +26,14 @@ jobs:
 
     - name: Checkout branch
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref }}
 
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           8.0.x
-          7.0.x
 
     - name: Build and pack
       run: fish .github/scripts/build.fish
@@ -41,7 +43,7 @@ jobs:
         ARTIFACT_DIR: "./artifacts"
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: artifacts
         if-no-files-found: error
@@ -51,7 +53,7 @@ jobs:
 
   test-windows:
     name: "Unit tests (.NET Framework)"
-    runs-on: "windows-2022"
+    runs-on: "windows-latest"
     needs: build
     environment: "Unit test environment"
 
@@ -102,20 +104,20 @@ jobs:
         && sudo apt-get -qq install fish parallel
 
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           8.0.x
 
     - name: Checkout branch
-      uses: actions/checkout@master
+      uses: actions/checkout@v4
 
     - name: Execute unit test script
       run: fish .github/scripts/test.fish
       shell: bash
 
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: core-test-results
         path: TestResults
@@ -127,6 +129,8 @@ jobs:
     runs-on: ubuntu-22.04
     needs: test
     environment: "Prerelease deployment environment"
+    # Only publish prerelease packages on the master branch
+    if: ${{ github.ref_name == 'master' }}
 
     steps:
     - name: Setup dotnet

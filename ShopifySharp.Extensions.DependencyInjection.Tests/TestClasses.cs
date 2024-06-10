@@ -8,7 +8,7 @@ public class TestException : Exception;
 public class TestRequestExecutionPolicy : IRequestExecutionPolicy
 {
     public Task<RequestResult<T>> Run<T>(
-        CloneableRequestMessage requestMessage,
+        CloneableRequestMessage baseRequestMessage,
         ExecuteRequestAsync<T> executeRequestAsync,
         CancellationToken cancellationToken,
         int? graphqlQueryCost = null
@@ -30,5 +30,16 @@ public class TestDomainUtility : IShopifyDomainUtility
     public Task<bool> IsValidShopDomainAsync(string shopDomain, CancellationToken cancellationToken = default)
     {
         throw new TestException();
+    }
+}
+
+public class TestServiceLifetime<T> where T : class
+{
+    public readonly T? Instance1, Instance2;
+
+    public TestServiceLifetime(T? instance1, T? instance2)
+    {
+        Instance1 = instance1;
+        Instance2 = instance2;
     }
 }
