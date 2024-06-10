@@ -5,6 +5,7 @@ using ShopifySharp.Factories;
 using ShopifySharp.Utilities;
 using System.Reflection;
 using System.Linq;
+using ShopifySharp.Infrastructure.Policies.ExponentialRetry;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
@@ -18,14 +19,20 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Adds a <see cref="IRequestExecutionPolicy"/> to your Dependency Injection container. ShopifySharp service factories
     /// managed by your container will use this policy when creating ShopifySharp services.
-    /// <p>Note: Policies are not true middleware, ShopifySharp services can only use one policy at this time.</p>
+    /// <p>Note: Policies are not true middleware, ShopifySharp services can only use one policy at this time.</p>2
     /// </summary>
+    /// <param name="lifetime">The lifetime of <see cref="IRequestExecutionPolicy"/>.</param>
     /// <typeparam name="T">A class that implements ShopifySharp's <see cref="IRequestExecutionPolicy"/> interface.</typeparam>
-    public static IServiceCollection AddShopifySharpRequestExecutionPolicy<T>(this IServiceCollection services)
+    public static IServiceCollection AddShopifySharpRequestExecutionPolicy<T>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         where T : class, IRequestExecutionPolicy
     {
-        // TODO: add ServiceLifetime parameter
-        services.AddSingleton<IRequestExecutionPolicy, T>();
+        if (typeof(T) == typeof(ExponentialRetryPolicy))
+        {
+            services.AddImplementationIfNotRegistered<ExponentialRetryPolicyOptions, ExponentialRetryPolicyOptions>(
+                _ => ExponentialRetryPolicyOptions.Default(),
+                lifetime);
+        }
+        services.Add(new ServiceDescriptor(typeof(IRequestExecutionPolicy), typeof(T), lifetime));
         return services;
     }
 
@@ -37,38 +44,38 @@ public static class ServiceCollectionExtensions
     /// <item><see cref="IShopifyRequestValidationUtility"/></item>
     /// </list>
     /// <param name="configure">An optional configuration action for configuring the utilities.</param>
+    /// <param name="lifetime">The lifetime of the ShopifySharp's utilities.</param>
     /// </summary>
-    public static IServiceCollection AddShopifySharpUtilities(this IServiceCollection services, Action<ShopifySharpUtilityOptions>? configure = null)
+    public static IServiceCollection AddShopifySharpUtilities(this IServiceCollection services, Action<ShopifySharpUtilityOptions>? configure = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
     {
         var options = new ShopifySharpUtilityOptions();
         configure?.Invoke(options);
 
-        // TODO: add ServiceLifetime parameter
         if(options.OauthUtility != null)
         {
-            services.AddSingleton(options.OauthUtility);
+            services.Add(new ServiceDescriptor(typeof(IShopifyOauthUtility), f => options.OauthUtility, lifetime));
         }
         else
         {
-            services.TryAddSingleton<IShopifyOauthUtility, ShopifyOauthUtility>();
+            services.TryAdd(new ServiceDescriptor(typeof(IShopifyOauthUtility), typeof(ShopifyOauthUtility), lifetime));
         }
 
         if(options.DomainUtility != null)
         {
-            services.AddSingleton(options.DomainUtility);
+            services.Add(new ServiceDescriptor(typeof(IShopifyDomainUtility), f => options.DomainUtility, lifetime));
         }
         else
         {
-            services.TryAddSingleton<IShopifyDomainUtility, ShopifyDomainUtility>();
+            services.TryAdd(new ServiceDescriptor(typeof(IShopifyDomainUtility), typeof(ShopifyDomainUtility), lifetime));
         }
 
         if(options.RequestValidationUtility != null)
         {
-            services.AddSingleton(options.RequestValidationUtility);
+            services.Add(new ServiceDescriptor(typeof(IShopifyRequestValidationUtility), f => options.RequestValidationUtility, lifetime));
         }
         else
         {
-            services.TryAddSingleton<IShopifyRequestValidationUtility, ShopifyRequestValidationUtility>();
+            services.TryAdd(new ServiceDescriptor(typeof(IShopifyRequestValidationUtility), typeof(ShopifyRequestValidationUtility), lifetime));
         }
 
         return services;
@@ -78,9 +85,9 @@ public static class ServiceCollectionExtensions
     /// Adds ShopifySharp's service factories to your Dependency Injection container. If you've added an <see cref="IRequestExecutionPolicy"/>,
     /// the service factories will use it when creating ShopifySharp services.
     /// </summary>
-    public static IServiceCollection AddShopifySharpServiceFactories(this IServiceCollection services)
+    /// <param name="lifetime">The lifetime of ShopifySharp's service factories.</param>
+    public static IServiceCollection AddShopifySharpServiceFactories(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)
     {
-        // TODO: add ServiceLifetime parameter
         var assembly = Assembly.GetAssembly(typeof(IServiceFactory<>));
 
         var factoryTypes = assembly!.GetTypes()
@@ -97,11 +104,11 @@ public static class ServiceCollectionExtensions
 
             if(serviceType != null)
             {
-                services.TryAddSingleton(serviceType, type);
+                services.TryAdd(new ServiceDescriptor(serviceType, type, lifetime));
             }
         }
 
-        services.TryAddSingleton<IPartnerServiceFactory, PartnerServiceFactory>();
+        services.TryAdd(new ServiceDescriptor(typeof(IPartnerServiceFactory), typeof(PartnerServiceFactory), lifetime));
 
         return services;
     }
@@ -116,13 +123,34 @@ public static class ServiceCollectionExtensions
     /// </list>
     /// </summary>
     /// <param name="services"></param>
+    /// <param name="lifetime">The lifetime of all ShopifySharp's Dependency Injection services</param>
     /// <typeparam name="T"></typeparam>
-    public static IServiceCollection AddShopifySharp<T>(this IServiceCollection services)
+    public static IServiceCollection AddShopifySharp<T>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         where T : class, IRequestExecutionPolicy
     {
+        if (typeof(T) == typeof(ExponentialRetryPolicy))
+        {
+            services.AddImplementationIfNotRegistered<ExponentialRetryPolicyOptions, ExponentialRetryPolicyOptions>(
+                _ => ExponentialRetryPolicyOptions.Default(),
+                lifetime);
+        }
+
         return services
-            .AddShopifySharpRequestExecutionPolicy<T>()
-            .AddShopifySharpUtilities()
-            .AddShopifySharpServiceFactories();
+            .AddShopifySharpRequestExecutionPolicy<T>(lifetime: lifetime)
+            .AddShopifySharpUtilities(lifetime: lifetime)
+            .AddShopifySharpServiceFactories(lifetime: lifetime);
+    }
+
+    /// <summary>
+    /// Registers the interface and its implementation if they aren't already registered.
+    /// </summary>
+    private static void AddImplementationIfNotRegistered<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> factory, ServiceLifetime lifetime)
+        where TImplementation : notnull, TService
+    {
+        services.TryAdd(new ServiceDescriptor(typeof(TService), (innerServices) =>
+        {
+            var output = factory.Invoke(innerServices);
+            return output;
+        }, lifetime));
     }
 }

@@ -1,8 +1,5 @@
 # ShopifySharp: A .NET library for Shopify.
 
-Merge new commits from nozzlegear TO Mv local Shopify:
-https://github.com/Megaventory/ShopifySharp/compare/master...nozzlegear:ShopifySharp:master
-
 [![NuGet](https://img.shields.io/nuget/v/ShopifySharp.svg?maxAge=3600)](https://www.nuget.org/packages/ShopifySharp/)
 [![Build status](https://github.com/nozzlegear/ShopifySharp/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/nozzlegear/ShopifySharp/actions/workflows/build-and-test.yml)
 [![license](https://img.shields.io/github/license/nozzlegear/shopifysharp.svg?maxAge=3600)](https://github.com/nozzlegear/shopifysharp/blob/master/LICENSE)
@@ -56,7 +53,9 @@ Shopify has begun versioning their API, meaning new features are locked behind n
 | 5.16.0 - 5.18.11     | 2022-04             |
 | 5.19.0 - 5.19.1      | 2022-07             |
 | 6.0.1 - 6.2.0        | 2023-01             |
-| 6.3.0 and above      | 2023-07             |
+| 6.3.0 - 6.12.2       | 2023-07             |
+| 6.13.0 - 6.14.1      | 2024-01             |
+| 6.15.0 and above.    | 2024-04.            |
 
 **Note:** ShopifySharp dropped support for .NET Framework 4.5 in version 5.14.0. [More details in #438.](https://github.com/nozzlegear/ShopifySharp/issues/438)
 The oldest version of .NET Framework we can support is [whichever version is supported by .NET Standard 2.0](https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-0#net-standard-versions).

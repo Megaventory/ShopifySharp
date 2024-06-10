@@ -1,12 +1,12 @@
 #nullable enable
-using Newtonsoft.Json.Linq;
-using ShopifySharp.Enums;
-using ShopifySharp.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using ShopifySharp.Enums;
+using ShopifySharp.Infrastructure;
 
 namespace ShopifySharp.Utilities;
 
@@ -242,7 +242,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
         using var response = await client.SendAsync(request);
         var rawDataString = await response.Content.ReadAsStringAsync();
 
-        ShopifyService.CheckResponseExceptions(response, rawDataString);
+        ShopifyService.CheckResponseExceptions(await request.GetRequestInfo(), response, rawDataString);
 
         var json = JToken.Parse(rawDataString);
         return new AuthorizationResult(json.Value<string>("access_token") ?? "", json.Value<string>("scope")?.Split(','));
@@ -285,7 +285,7 @@ public class ShopifyOauthUtility(IShopifyDomainUtility? domainUtility = null) : 
         using var response = await client.SendAsync(request);
         var rawDataString = await response.Content.ReadAsStringAsync();
 
-        ShopifyService.CheckResponseExceptions(response, rawDataString);
+        ShopifyService.CheckResponseExceptions(await request.GetRequestInfo(), response, rawDataString);
 
         var json = JToken.Parse(rawDataString);
         // TODO: throw a ShopifyJsonParseException if value is null. Exception should have a RawBody property.

@@ -131,7 +131,7 @@ public class ResponseClassifierTest
 
     private ShopifyRateLimitException CreateRateLimitException(ShopifyRateLimitReason reason)
     {
-        return new ShopifyRateLimitException((HttpStatusCode)429,
+        return new ShopifyRateLimitException(string.Empty, (HttpStatusCode)429,
             [],
             "some-exception-message",
             "some-raw-response-body",
