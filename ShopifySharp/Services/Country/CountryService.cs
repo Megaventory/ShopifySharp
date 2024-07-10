@@ -1,3 +1,4 @@
+using System;
 using ShopifySharp.Filters;
 using ShopifySharp.Infrastructure;
 using ShopifySharp.Lists;
@@ -11,6 +12,7 @@ namespace ShopifySharp;
 /// <summary>
 /// A service for manipulating Shopify countries.
 /// </summary>
+[Obsolete("https://shopify.dev/changelog/deprecation-notice-country-and-province-endpoints-in-admin-rest-api")]
 public class CountryService : ShopifyService, ICountryService
 {
     /// <summary>

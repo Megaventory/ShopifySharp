@@ -22,7 +22,7 @@ public abstract class ShopifyService : IShopifyService
 
 #nullable enable
 
-    public virtual string APIVersion => "2024-04";
+    public virtual string APIVersion => "2024-07";
     public virtual bool SupportsAPIVersioning => true;
 
     protected Uri _ShopUri { get; set; }
@@ -65,29 +65,6 @@ public abstract class ShopifyService : IShopifyService
         _AccessToken = credentials.AccessToken;
         _Client = _HttpClientFactory.CreateClient();
         _ExecutionPolicy = _GlobalExecutionPolicy;
-    }
-
-    /// <summary>
-    /// Attempts to build a shop API <see cref="Uri"/> for the given shop.
-    /// </summary>
-    /// <param name="shopDomain">The shop's *.myshopify.com URL.</param>
-    /// <param name="withAdminPath">Whether the <c>/admin</c> path should be included in the resulting URI.</param>
-    [Obsolete("This method is deprecated and will be removed in a future version of ShopifySharp. Please use the ShopifySharp.Utilities.ShopifyDomainUtility instead.")]
-    // TODO: remove this method after 6-8 weeks
-    public static Uri BuildShopUri(string shopDomain, bool withAdminPath)
-    {
-        var domainUtility = new ShopifyDomainUtility();
-        var shopUri = domainUtility.BuildShopDomainUri(shopDomain);
-
-        if (!withAdminPath)
-            return shopUri;
-
-        var uriBuilder = new UriBuilder(shopUri)
-        {
-            Path = "admin"
-        };
-
-        return uriBuilder.Uri;
     }
 
 #nullable disable
@@ -147,10 +124,6 @@ public abstract class ShopifyService : IShopifyService
 
         return new RequestUri(ub.Uri);
     }
-
-    [Obsolete("This method is deprecated and has been replaced by BuildAdminRequestUri(string, bool).")]
-    protected RequestUri PrepareRequest(string path) =>
-        BuildRequestUri(path);
 
     /// <summary>
     /// Prepares a request to the path and appends the shop's access token header if applicable.
@@ -216,7 +189,6 @@ public abstract class ShopifyService : IShopifyService
             var result = method == HttpMethod.Delete ? default : Serializer.Deserialize<T>(rawResult, rootElement, dateParseHandlingOverride);
 
             return new RequestResult<T>(await baseRequestMessage.GetRequestInfo(),
-                response,
                 response.Headers,
                 result,
                 rawResult,

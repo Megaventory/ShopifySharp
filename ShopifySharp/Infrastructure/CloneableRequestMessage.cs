@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShopifySharp.Infrastructure;
@@ -15,24 +16,9 @@ public class CloneableRequestMessage: HttpRequestMessage
         }
     }
 
-    [Obsolete("This method has been replaced with " + nameof(CloneAsync) + ", it will be removed in a future version of ShopifySharp.")]
-    public CloneableRequestMessage Clone()
+    public virtual async Task<CloneableRequestMessage> CloneAsync(CancellationToken cancellationToken = default)
     {
-        var newContent = Content;
-
-        if (newContent is JsonContent c)
-        {
-            newContent = c.Clone();
-
-            foreach (var header in Content.Headers)
-            {
-                if (!newContent.Headers.Contains(header.Key))
-                {
-                    newContent.Headers.Add(header.Key, header.Value);
-                }
-            }
-        }
-
+        var newContent = Content is null ? null : await CloneToStreamOrReadOnlyMemoryContent(Content, cancellationToken);
         var cloned = new CloneableRequestMessage(RequestUri, Method, newContent);
 
         // Copy over the request's headers which includes the access token if set
@@ -44,26 +30,12 @@ public class CloneableRequestMessage: HttpRequestMessage
         return cloned;
     }
 
-    public virtual async Task<CloneableRequestMessage> CloneAsync()
-    {
-        var newContent = Content is null ? null : await CloneToStreamOrReadOnlyMemoryContent(Content);
-        var cloned = new CloneableRequestMessage(RequestUri, Method, newContent);
-
-        // Copy over the request's headers which includes the access token if set
-        foreach (var header in Headers)
-        {
-            cloned.Headers.Add(header.Key, header.Value);
-        }
-
-        return cloned;
-    }
-
-    private static async Task<HttpContent> CloneToStreamOrReadOnlyMemoryContent(HttpContent originalStreamContent)
+    private static async Task<HttpContent> CloneToStreamOrReadOnlyMemoryContent(HttpContent originalStreamContent, CancellationToken cancellationToken = default)
     {
         HttpContent clonedContent;
 
 #if NET6_0_OR_GREATER
-        var rs = new ReadOnlyMemory<byte>(await originalStreamContent.ReadAsByteArrayAsync());
+        var rs = new ReadOnlyMemory<byte>(await originalStreamContent.ReadAsByteArrayAsync(cancellationToken));
         clonedContent = new ReadOnlyMemoryContent(rs);
 #else
             var ms = new System.IO.MemoryStream();
