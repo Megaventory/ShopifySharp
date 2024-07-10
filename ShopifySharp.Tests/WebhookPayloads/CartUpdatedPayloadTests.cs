@@ -157,12 +157,10 @@ public class CartUpdatedPayloadTests
     {
         filename = filename ?? JsonFilePath;
 
-#if NET472
-            var jsonLines = File.ReadAllLines(filename);
-            var json = String.Join("", jsonLines);
-#else
-        var json = await File.ReadAllTextAsync(filename);
-#endif
+        var jsonLines = File.ReadAllLines(filename);
+
+        var json = String.Join("", jsonLines);
+
         return json;
     }
 }

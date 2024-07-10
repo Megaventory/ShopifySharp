@@ -39,12 +39,14 @@ public class Asset_Tests : IClassFixture<Asset_Tests_Fixture>
     [Fact]
     public async Task Updates_Assets()
     {
-        string key = "templates/update-test.liquid";
-        string newValue = "<h1>Hello, world! I've been updated!</h1>";
+        var key = "snippets/update-test.liquid";
+        var newValue = "<h1>Hello, world! I've been updated!</h1>";
         var created = await Fixture.Create(key);
         created.Value = newValue;
 
         await Fixture.Service.CreateOrUpdateAsync(Fixture.ThemeId, created);
+        // In 2024-07, there seems to be a small delay between when an asset is updated and when the new value is available
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Value is not returned when creating or updating. Must get the asset to check it.
         var updated = await Fixture.Service.GetAsync(Fixture.ThemeId, key);
@@ -143,7 +145,7 @@ public class Asset_Tests_Fixture : IAsyncLifetime
             {
                 await Service.DeleteAsync(ThemeId, asset.Key);
             }
-            catch (ShopifyException ex)
+            catch (ShopifyHttpException ex)
             {
                 if (ex.HttpStatusCode != HttpStatusCode.NotFound)
                 {

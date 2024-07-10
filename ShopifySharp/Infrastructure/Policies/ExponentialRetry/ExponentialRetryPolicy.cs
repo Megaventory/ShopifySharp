@@ -43,7 +43,7 @@ public class ExponentialRetryPolicy : IRequestExecutionPolicy
     {
         var currentTry = 1;
         var useMaximumDelayBetweenRetries = false;
-        var combinedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        using var combinedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
         if (_options.MaximumDelayBeforeRequestCancellation is not null)
             combinedCancellationToken.CancelAfter(_options.MaximumDelayBeforeRequestCancellation.Value);
@@ -52,12 +52,11 @@ public class ExponentialRetryPolicy : IRequestExecutionPolicy
         {
             combinedCancellationToken.Token.ThrowIfCancellationRequested();
 
-            using var clonedRequestMessage = await baseRequestMessage.CloneAsync();
+            using var clonedRequestMessage = await baseRequestMessage.CloneAsync(combinedCancellationToken.Token);
 
             try
             {
-                var value = await executeRequestAsync.Invoke(clonedRequestMessage);
-                return value;
+                return await executeRequestAsync.Invoke(clonedRequestMessage);
             }
             catch (ShopifyException ex)
             {
@@ -73,30 +72,10 @@ public class ExponentialRetryPolicy : IRequestExecutionPolicy
             // We can quickly hit an overflow by using exponential math to calculate a delay and pass it to the timespan constructor.
             // To avoid that, we check to see if one of the previous loops' delays passed the maximum delay between retries. If so,
             // we use the maximum delay rather than calculating another one and potentially hitting that overflow.
-            TimeSpan nextDelay;
+            var nextDelay = useMaximumDelayBetweenRetries ? _options.MaximumDelayBetweenRetries : CalculateNextDelay(currentTry);
 
-            if (useMaximumDelayBetweenRetries)
-            {
-                nextDelay = _options.MaximumDelayBetweenRetries;
-            }
-            else
-            {
-                try
-                {
-                    nextDelay = TimeSpan.FromMilliseconds(Math.Pow(2, currentTry - 1) * _options.InitialBackoffInMilliseconds);
-
-                    if (nextDelay > _options.MaximumDelayBetweenRetries)
-                    {
-                        nextDelay = _options.MaximumDelayBetweenRetries;
-                    }
-                }
-                catch (OverflowException)
-                {
-                    // TODO: add logging here once ShopifySharp supports it
-                    useMaximumDelayBetweenRetries = true;
-                    nextDelay = _options.MaximumDelayBetweenRetries;
-                }
-            }
+            if (nextDelay >= _options.MaximumDelayBetweenRetries)
+                useMaximumDelayBetweenRetries = true;
 
             currentTry++;
 
@@ -104,4 +83,17 @@ public class ExponentialRetryPolicy : IRequestExecutionPolicy
             await _taskScheduler.DelayAsync(nextDelay, combinedCancellationToken.Token);
         }
     }
+
+    private TimeSpan CalculateNextDelay(int currentTry)
+    {
+        if (currentTry == 1 && _options.FirstRetryIsImmediate)
+            return TimeSpan.Zero;
+
+        var exponent = currentTry - (_options.FirstRetryIsImmediate ? 2 : 1);
+        var delay = Math.Pow(2, Math.Max(0, exponent)) * _options.InitialBackoffInMilliseconds;
+        var calculatedDelay = TimeSpan.FromMilliseconds(delay);
+
+        return calculatedDelay > _options.MaximumDelayBetweenRetries ? _options.MaximumDelayBetweenRetries : calculatedDelay;
+    }
+
 }
