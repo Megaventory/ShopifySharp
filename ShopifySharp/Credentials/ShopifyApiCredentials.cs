@@ -30,11 +30,9 @@ public readonly struct ShopifyApiCredentials(string shopDomain, string accessTok
 
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-            return (ShopDomain, AccessToken).GetHashCode();
-#else
-        return HashCode.Combine(ShopDomain, AccessToken);
-#endif
+
+        return (ShopDomain, AccessToken).GetHashCode();
+
     }
 
     public static bool operator ==(ShopifyApiCredentials left, ShopifyApiCredentials right)
