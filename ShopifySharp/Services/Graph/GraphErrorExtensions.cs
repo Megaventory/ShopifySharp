@@ -1,13 +1,14 @@
 #nullable enable
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using ShopifySharp.Converters.SystemTextJson;
+
 namespace ShopifySharp.Services.Graph;
 
 public record GraphErrorExtensions
 {
-#if NET8_0_OR_GREATER
-    public required string Code { get; set; }
-#else
-    public string Code { get; set; } = null!;
-#endif
+    // TODO: make this nullable
+    public string Code { get; set; } = string.Empty;
 
     public double? Cost { get; set; }
 
@@ -18,4 +19,9 @@ public record GraphErrorExtensions
     public string? TypeName { get; set; }
 
     public string? ArgumentName { get; set; }
+
+    [JsonConverter(typeof(ObjectDictionaryConverter))]
+    public IReadOnlyDictionary<string, object?>? Value { get; set; }
+
+    public IReadOnlyList<GraphErrorExtensionsProblem>? Problems { get; set; }
 }
